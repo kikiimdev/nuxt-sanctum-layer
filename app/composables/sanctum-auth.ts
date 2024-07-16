@@ -5,7 +5,13 @@ export const useSanctumAuth = () => {
   const sanctumToken = useSanctumToken();
   const xsrfToken = useXsrfToken();
 
-  const login = async (body: { username: string; password: string }) => {
+  type LoginBody = {
+    username: string;
+    password: string;
+    [key: string]: any;
+  };
+
+  const login = async (body: LoginBody) => {
     try {
       if (!xsrfToken.value) await fetchSanctumToken();
 
@@ -15,7 +21,6 @@ export const useSanctumAuth = () => {
           method: "POST",
           body: {
             ...body,
-            device_name: "browser",
           },
         }
       );
