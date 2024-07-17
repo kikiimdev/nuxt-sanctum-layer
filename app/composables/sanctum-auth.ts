@@ -40,7 +40,7 @@ export const useSanctumAuth = () => {
 
   const logout = async () => {
     try {
-      await $sanctumApi(config.public.sanctum.logoutRedirectUrl, {
+      await $sanctumApi(config.public.sanctum.endpoint.logout, {
         method: "POST",
       });
 
