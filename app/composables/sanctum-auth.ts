@@ -94,7 +94,7 @@ export const useSanctumAuth = () => {
 };
 
 const useSanctumUser = () => {
-  const user = useState("sanctum-user", () => null);
+  const user = useState<Record<string, any> | null>("sanctum-user", () => null);
 
   return user;
 };
