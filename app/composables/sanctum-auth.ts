@@ -11,7 +11,10 @@ export const useSanctumAuth = () => {
     [key: string]: any;
   };
 
-  const login = async (body: LoginBody) => {
+  const login = async (
+    body: LoginBody,
+    { redirect = false }: { redirect: boolean }
+  ) => {
     try {
       if (!xsrfToken.value) await fetchSanctumToken();
 
@@ -28,14 +31,16 @@ export const useSanctumAuth = () => {
       sanctumToken.value = result.token;
 
       await fetchUser();
+
+      if (redirect) navigateTo(config.public.sanctum.postLoginRedirectUrl);
     } catch (e) {
-      console.error(e);
+      throw e;
     }
   };
 
   const logout = async () => {
     try {
-      await $sanctumApi(config.public.sanctum.endpoint.logout, {
+      await $sanctumApi(config.public.sanctum.logoutRedirectUrl, {
         method: "POST",
       });
 
@@ -43,7 +48,7 @@ export const useSanctumAuth = () => {
       user.value = null;
       xsrfToken.value = null;
     } catch (e) {
-      console.error(e);
+      throw e;
     }
   };
 
@@ -56,7 +61,7 @@ export const useSanctumAuth = () => {
       if (result) user.value = result;
       else user.value = null;
     } catch (e: any) {
-      console.error(e);
+      throw e;
     }
   };
 
@@ -69,7 +74,7 @@ export const useSanctumAuth = () => {
         throw new Error("Failed to get CSRF token");
       }
     } catch (e) {
-      console.error(e);
+      throw e;
     }
   }
 
