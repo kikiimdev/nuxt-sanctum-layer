@@ -32,7 +32,13 @@ export const useSanctumAuth = () => {
 
       await fetchUser();
 
-      if (redirect) navigateTo(config.public.sanctum.postLoginRedirectUrl);
+      if (redirect) {
+        const { query } = useRoute();
+        navigateTo(
+          query?.redirectTo?.toString() ??
+            config.public.sanctum.postLoginRedirectUrl
+        );
+      }
     } catch (e) {
       throw e;
     }
