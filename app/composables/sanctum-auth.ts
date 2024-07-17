@@ -13,7 +13,7 @@ export const useSanctumAuth = () => {
 
   const login = async (
     body: LoginBody,
-    { redirect = false }: { redirect: boolean }
+    { redirect }: { redirect: boolean } = { redirect: false }
   ) => {
     try {
       if (!xsrfToken.value) await fetchSanctumToken();
