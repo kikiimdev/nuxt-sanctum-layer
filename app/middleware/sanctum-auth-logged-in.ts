@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!user.value) {
     return navigateTo({
       path: config.public.sanctum.loginUrl,
-      query: { redirectTo: to.path },
+      query: { redirectTo: to.fullPath },
     });
   }
 });
