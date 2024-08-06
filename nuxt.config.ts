@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       sanctum: {
-        baseURL: process.env.SANCTUM_BASE_URL || "http://localhost:8000",
+        baseURL: process.env.NUXT_SANCTUM_BASE_URL || "http://localhost:8000",
         endpoint: {
           fetchUser: "/api/user",
           login: "/api/login",
