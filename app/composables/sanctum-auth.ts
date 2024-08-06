@@ -13,7 +13,12 @@ export const useSanctumAuth = () => {
 
   const login = async (
     body: LoginBody,
-    { redirect }: { redirect: boolean } = { redirect: false }
+    {
+      redirect,
+      onSuccess,
+    }: { redirect: boolean; onSuccess?: (user: any) => void } = {
+      redirect: false,
+    },
   ) => {
     try {
       if (!xsrfToken.value) await fetchSanctumToken();
@@ -25,18 +30,20 @@ export const useSanctumAuth = () => {
           body: {
             ...body,
           },
-        }
+        },
       );
 
       sanctumToken.value = result.token;
 
       await fetchUser();
 
-      if (redirect) {
+      if (onSuccess) {
+        return onSuccess(user.value);
+      } else if (redirect) {
         const { query } = useRoute();
         navigateTo(
           query?.redirectTo?.toString() ??
-            config.public.sanctum.postLoginRedirectUrl
+            config.public.sanctum.postLoginRedirectUrl,
         );
       }
     } catch (e) {
@@ -61,7 +68,7 @@ export const useSanctumAuth = () => {
   const fetchUser = async () => {
     try {
       const result: any = await $sanctumApi(
-        config.public.sanctum.endpoint.fetchUser
+        config.public.sanctum.endpoint.fetchUser,
       );
 
       if (result) user.value = result;
