@@ -1,7 +1,10 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { fetchUser, sanctumToken } = useSanctumAuth();
+  const config = useRuntimeConfig();
+  if (config.public.sanctum.useAuthGlobal) {
+    const { fetchUser, sanctumToken } = useSanctumAuth();
 
-  if (sanctumToken.value) {
-    await fetchUser();
+    if (sanctumToken.value) {
+      await fetchUser();
+    }
   }
 });

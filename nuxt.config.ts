@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       sanctum: {
+        useAuthGlobal: process.env.SANCTUM_USE_AUTH_GLOBAL! === "true",
         baseURL: process.env.SANCTUM_BASE_URL || "http://localhost:8000",
         endpoint: {
           fetchUser: "/api/user",
