@@ -2,8 +2,8 @@ export default defineNuxtPlugin((app) => {
   const config = useRuntimeConfig();
 
   // const { $precognition } = useNuxtApp();
-  const token = useXsrfToken();
-  const sanctumToken = useSanctumToken();
+  // const token = useXsrfToken();
+  // const sanctumToken = useSanctumToken();
 
   const api = $fetch.create({
     baseURL: config.public.sanctum.baseURL,
@@ -13,6 +13,8 @@ export default defineNuxtPlugin((app) => {
       "Content-Type": "application/json",
     },
     onRequest: ({ options }) => {
+      const token = useXsrfToken();
+      const sanctumToken = useSanctumToken();
       // Setup csrf protection for every requests if available
       const headers = new Headers(options.headers);
 
@@ -33,6 +35,7 @@ export default defineNuxtPlugin((app) => {
 
   async function fetchSanctumToken() {
     try {
+      const token = useXsrfToken();
       await api(config.public.sanctum.endpoint.csrf);
       token.value = useCookie("XSRF-TOKEN").value;
 
@@ -51,7 +54,7 @@ export default defineNuxtPlugin((app) => {
       sanctumApi: api,
       sanctum: {
         fetchToken: fetchSanctumToken,
-        token,
+        token: useXsrfToken(),
       },
     },
   };
